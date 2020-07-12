@@ -15,6 +15,8 @@
                     </p>
                     <p>{!! $post->details !!}</p>
 
+
+
                     <div class="tag-widget post-tag-container mb-5 mt-5">
                         <div class="tagcloud">
                             <a href="#" class="tag-cloud-link">Life</a>
@@ -37,32 +39,43 @@
 
 
 
-
-
-
                     <div class="pt-5 mt-5">
-                        <h3 class="mb-5">6 Comments</h3>
-                        <ul class="comment-list">
-                            <li class="comment">
-                                <div class="vcard bio">
-                                    <img src="images/person_1.jpg" alt="Image placeholder">
-                                </div>
-                                <div class="comment-body">
-                                    <h3>John Doe</h3>
-                                    <div class="meta">June 27, 2018 at 2:21pm</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                                    <p><a href="#" class="reply">Reply</a></p>
-                                </div>
-                            </li>
+                        <h3>6 Comments</h3>
 
-                            <li class="comment">
+                        <div class="comment-form-wrap pt-5">
+                            @if(\Illuminate\Support\Facades\Auth::check())
+                                <h3 class="mb-5">Leave a comment</h3>
+                                <form action="{{ url('/comment') }}" method="POST" class="p-5 bg-light">
+                                    <div class="form-group">
+                                        {{ csrf_field() }}
+                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                        <label for="message">Message</label>
+                                        <textarea name="comment" id="comment" cols="40" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="submit" name="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                                    </div>
+
+                                </form>
+                            @endif
+                        </div>
+
+
+                        @forelse($comments as $comment)
+                        <ul class="comment-list">
+                            <li class="comment mt-5">
                                 <div class="vcard bio">
-                                    <img src="images/person_1.jpg" alt="Image placeholder">
+                                    <img src="{{ asset('images/person_1.jpg') }}" alt="Image placeholder">
                                 </div>
                                 <div class="comment-body">
-                                    <h3>John Doe</h3>
-                                    <div class="meta">June 27, 2018 at 2:21pm</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                                    <h3>{{ $comment->user->name }}</h3>
+                                    <div class="meta">{{ $comment->created_at->diffforHumans() }}
+                                        @if(\Illuminate\Support\Facades\Auth::id() == $comment->user->id)
+                                        &nbsp;&nbsp;&nbsp;<a href="{{ route('user.commentEditShow',$comment->id) }}">Edit</a>
+                                            &nbsp;<a style="color: red;" onclick="return confirm('want to delete this comment?');" href="{{ route('user.commentDelete',$comment->id) }}">Delete</a>
+                                        @endif
+                                    </div>
+                                    <p>{{ $comment->comment }}</p>
                                     <p><a href="#" class="reply">Reply</a></p>
                                 </div>
 
@@ -77,79 +90,19 @@
                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
                                             <p><a href="#" class="reply">Reply</a></p>
                                         </div>
-
-
-                                        <ul class="children">
-                                            <li class="comment">
-                                                <div class="vcard bio">
-                                                    <img src="images/person_1.jpg" alt="Image placeholder">
-                                                </div>
-                                                <div class="comment-body">
-                                                    <h3>John Doe</h3>
-                                                    <div class="meta">June 27, 2018 at 2:21pm</div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                                                    <p><a href="#" class="reply">Reply</a></p>
-                                                </div>
-
-                                                <ul class="children">
-                                                    <li class="comment">
-                                                        <div class="vcard bio">
-                                                            <img src="images/person_1.jpg" alt="Image placeholder">
-                                                        </div>
-                                                        <div class="comment-body">
-                                                            <h3>John Doe</h3>
-                                                            <div class="meta">June 27, 2018 at 2:21pm</div>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                                                            <p><a href="#" class="reply">Reply</a></p>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
                                     </li>
                                 </ul>
                             </li>
 
-                            <li class="comment">
-                                <div class="vcard bio">
-                                    <img src="images/person_1.jpg" alt="Image placeholder">
-                                </div>
-                                <div class="comment-body">
-                                    <h3>John Doe</h3>
-                                    <div class="meta">June 27, 2018 at 2:21pm</div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
-                                    <p><a href="#" class="reply">Reply</a></p>
-                                </div>
-                            </li>
                         </ul>
+                        @empty
+                            <p class="mt-5"><b>No comments yet</b></p>
+                        @endforelse
                         <!-- END comment-list -->
 
-                        <div class="comment-form-wrap pt-5">
-                            <h3 class="mb-5">Leave a comment</h3>
-                            <form action="#" class="p-5 bg-light">
-                                <div class="form-group">
-                                    <label for="name">Name *</label>
-                                    <input type="text" class="form-control" id="name">
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email *</label>
-                                    <input type="email" class="form-control" id="email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="website">Website</label>
-                                    <input type="url" class="form-control" id="website">
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="message">Message</label>
-                                    <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
-                                </div>
 
-                            </form>
-                        </div>
+
                     </div>
                 </div> <!-- .col-md-8 -->
 
@@ -185,7 +138,7 @@
                                     <div class="meta">
                                         <div><a href="#"><span class="icon-calendar"></span> {{ $p->created_at->diffforHumans() }}</a></div>
                                         <div><a href="#"><span class="icon-person"></span> {{ $p->user->name }}</a></div>
-                                        <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                                        <div><a href="#"><span class="icon-chat"></span> {{ $p->comment->count() }}</a></div>
                                     </div>
                                 </div>
                             </div>

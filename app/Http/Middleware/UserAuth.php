@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class UserAuth
 {
@@ -15,6 +16,15 @@ class UserAuth
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(Auth::check()){
+            return $next($request);
+        }else{
+            return redirect('/login');
+        }
+
     }
+
+
 }
+
+

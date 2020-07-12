@@ -6,10 +6,15 @@
 
     <section class="ftco-section ftco-degree-bg">
         <div class="container">
+
             <div class="row">
                 <div class="col-lg-8 ftco-animate">
                     <div class="row">
-
+                        <div class="col-md-12 mb-3">
+                        <form action="{{ url('/search') }}" method="GET" class="d-flex">
+                            <input type="text" class="form-control" name="search_value" placeholder="Search..."> &nbsp;&nbsp; <input type="submit" class="btn btn-outline-secondary btn-md" name="Search" value="Search">
+                        </form>
+                        </div>
                         @foreach($posts as $post)
                         <div class="col-md-12 d-flex ftco-animate">
                             <div class="blog-entry align-self-stretch d-md-flex">
@@ -21,7 +26,7 @@
 
                                         <div><a href="#"><span class="icon-person"></span> {{ $post->user->name }}</a></div>
 
-                                        <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                                        <div><a href="#" class="meta-chat"><span class="icon-chat"></span> {{ $post->comment->count() }}</a></div>
                                     </div>
                                     <h3 class="heading"><a href="{{ route('blogView',$post->id) }}">{{ $post->title }}</a></h3>
                                     <p>{!! \Illuminate\Support\Str::limit(strip_tags($post->details),100) !!}</p>
@@ -40,13 +45,15 @@
 
 
 
-
                 <div class="col-lg-4 sidebar ftco-animate">
                     <div class="sidebar-box">
                         <form action="#" class="search-form">
                             <div class="form-group">
-                                <span class="icon ion-ios-search"></span>
-                                <input type="text" class="form-control" placeholder="Search...">
+{{--                                <span class="icon ion-ios-search"></span>--}}
+{{--                                <form action="{{ url('/search') }}" method="GET">--}}
+{{--                                    <input type="text" class="form-control" name="search_value" placeholder="Search...">--}}
+{{--                                    <input type="submit" class="btn btn-sm" name="Search" value="Search" >--}}
+{{--                                </form>--}}
                             </div>
                         </form>
                     </div>
@@ -71,7 +78,7 @@
                                 <div class="meta">
                                     <div><a href="#"><span class="icon-calendar"></span> {{ $post->created_at->diffforHumans() }}</a></div>
                                     <div><a href="#"><span class="icon-person"></span> {{ $post->user->name }}</a></div>
-                                    <div><a href="#"><span class="icon-chat"></span> 19</a></div>
+                                    <div><a href="#"><span class="icon-chat"></span> {{ $post->comment->count() }}</a></div>
                                 </div>
                             </div>
                         </div>

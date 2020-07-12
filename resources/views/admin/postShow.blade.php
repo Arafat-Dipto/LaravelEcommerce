@@ -39,7 +39,7 @@
                                 </td>
                             </tr>
                             @endforeach
-
+                            {{ $posts->links() }}
                             </tbody>
                         </table>
                     </div>

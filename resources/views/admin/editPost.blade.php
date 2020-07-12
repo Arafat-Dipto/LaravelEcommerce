@@ -11,7 +11,9 @@
             <form action="{{ route('admin.postEdit',$post->id) }}" class="form-group" enctype="multipart/form-data" method="POST">
                 {{ csrf_field() }}
                 <input value="{{ $post->title }}" type="text" name="title" placeholder="Post Title" class="form-control"><br>
-                <input  type="file" name="image" accept="image/*" class="form-control mb-3"><br>
+                <img src="{{ asset('/images/'.$post->image) }}" alt="" width="20%">
+                <input type="hidden" name="prev_img" value="{{ $post->image }}" >
+                <input va type="file" name="image" accept="image/*" class="form-control mb-3"><br>
                 <textarea name="details" id="image-tools" cols="30" rows="10" class="form-control">{!! $post->details !!}</textarea><br>
                 <input type="submit" name="submit" value="update" class="btn btn-primary btn-sm">
             </form>

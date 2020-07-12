@@ -108,12 +108,21 @@
                 <li>
                     <a href="{{ url('/admin/user') }}"><i class="fa fa-table fa-fw"></i>Manage Users</a>
                 </li>
+                <li>
+                    <a href="{{ url('/admin/addCategory') }}"><i class="fa fa-table fa-fw"></i>Add A Category</a>
+                </li>
                 @endif
                 <li>
                     <a href="{{ url('/admin/post/create') }}"><i class="fa fa-table fa-fw"></i>Create Post</a>
                 </li>
                 <li>
                     <a href="{{ url('/admin/post') }}"><i class="fa fa-table fa-fw"></i>Manage Posts</a>
+                </li>
+                <li>
+                    <a href="{{ url('/admin/addProduct') }}"><i class="fa fa-table fa-fw"></i>Add Product</a>
+                </li>
+                <li>
+                    <a href="{{ url('/admin/product') }}"><i class="fa fa-table fa-fw"></i>Manage Products</a>
                 </li>
                 <li>
                     <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>

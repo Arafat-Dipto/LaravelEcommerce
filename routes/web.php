@@ -23,11 +23,9 @@ Route::get('/about','UserController@about');
 Route::get('/blog','UserController@blog');
 Route::get('/blog/{id}/view','UserController@blogView')->name('blogView');
 Route::get('/contact','UserController@contact');
-Route::get('/cart','UserController@cart');
 Route::get('/shop','UserController@shop');
-Route::get('/wishlist','UserController@wishlist');
-Route::get('/productsingle','UserController@productsingle');
-Route::get('/checkout','UserController@checkout');
+Route::get('/shop/{id}/productsingle','UserController@productsingle')->name('productView');
+
 
 
 Route::get('/login','UserController@showlogin')->name('user.login.show');
@@ -37,9 +35,20 @@ Route::get('/register','UserController@showregister')->name('user.register.show'
 Route::post('/register','UserController@register');
 Route::get('/verify/{token}','UserController@verify');
 
-
-
-
+//user routes...
+Route::post('/comment','CommentController@create')->middleware('userAuth');
+Route::get('/comment/{id}/deleteComment','CommentController@deleteComment')->name('user.commentDelete')->middleware('userAuth');
+Route::get('/comment/{id}/editComment','CommentController@editCommentShow')->name('user.commentEditShow')->middleware('userAuth');
+Route::post('/comment/{id}/editComment','CommentController@editComment')->name('user.commentEdit')->middleware('userAuth');
+Route::get('/search','Usercontroller@search');
+Route::get('/cart','CartController@show');
+Route::get('/cart/clear','CartController@clear')->name('cartClear');
+Route::get('cart/{id}/add','CartController@add')->name('cartAdd');
+Route::get('cart/wishlist','CartController@wishlist')->name('cartWishlist');
+Route::get('cart/{id}/addq','CartController@addq')->name('cartAddq');
+Route::get('cart/{id}/remove','CartController@remove')->name('cartRemove');
+Route::get('cart/checkout','CartController@checkout');
+Route::get('/paysuccess','CartController@paysuccess');
 
 //bakcend routes...
 Route::group(['prefix'=>'admin'],function(){
@@ -55,12 +64,26 @@ Route::group(['prefix'=>'admin'],function(){
         Route::get('/{id}/disable','AdminDashboardController@disable')->middleware('adminCheck');
         Route::get('/{id}/enable','AdminDashboardController@enable')->middleware('adminCheck');
         Route::get('/{id}/deleteUser','AdminDashboardController@deleteUser')->middleware('adminCheck');
+
+
         Route::get('/post/create','AdminDashboardController@createPostShow');
         Route::post('/post/create','AdminDashboardController@createPost');
         Route::get('/post','AdminDashboardController@showPost');
         Route::get('/post/{id}/edit','AdminDashboardController@showEditPost')->name('admin.postEditShow');
         Route::post('/post/{id}/edit','AdminDashboardController@editPost')->name('admin.postEdit');
         Route::get('/post/{id}/deletePost','AdminDashboardController@deletePost')->name('admin.postDelete');
+
+
+        Route::get('/addProduct','ProductController@showAddProduct');
+        Route::post('/addProduct','ProductController@addProduct');
+        Route::get('/addCategory','ProductController@showAddCategory')->middleware('adminCheck');
+        Route::post('/addCategory','ProductController@addCategory')->middleware('adminCheck');
+
+        Route::get('/product','ProductController@showProduct');
+        Route::get('/product/{id}/edit','ProductController@showEditProduct')->name('admin.productEditShow');
+        Route::post('/product/{id}/edit','ProductController@editProduct')->name('admin.productEdit');
+        Route::get('/product/{id}/deleteProduct','ProductController@deleteProduct')->name('admin.productDelete');
+
 
     });
 });

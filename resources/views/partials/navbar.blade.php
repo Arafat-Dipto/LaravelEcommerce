@@ -34,18 +34,25 @@
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
                         <a class="dropdown-item" href="{{ url('/shop') }}">Shop</a>
-                        <a class="dropdown-item" href="{{ url('/wishlist') }}">Wishlist</a>
-                        <a class="dropdown-item" href="{{ url('/productsingle')}}">Single Product</a>
+                        <a class="dropdown-item" href="{{ url('cart/wishlist') }}">Wishlist</a>
                         <a class="dropdown-item" href="{{ url('/cart') }}">Cart</a>
-                        <a class="dropdown-item" href="{{ url('/checkout') }}">Checkout</a>
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <a class="dropdown-item" href="{{ url('cart/checkout') }}">Checkout</a>
+                        @endif
                     </div>
                 </li>
                 <li class="nav-item"><a href="{{ url('/about') }}" class="nav-link">About</a></li>
                 <li class="nav-item"><a href="{{ url('/blog') }}" class="nav-link">Blog</a></li>
                 <li class="nav-item"><a href="{{ url('/contact') }}" class="nav-link">Contact</a></li>
-                <li class="nav-item cta cta-colored"><a href="{{ url('/cart') }}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-                <li class="nav-item "><a href="{{ url('/login') }}" class="nav-link"><span class="icon-user"></span> Login</a></li>
 
+                @if(\Illuminate\Support\Facades\Auth::check())
+                    <li class="nav-item cta cta-colored"><a href="{{ url('/cart') }}" class="nav-link"><span class="icon-shopping_cart"></span>[{{ \Cart::session(\Illuminate\Support\Facades\Auth::user()->id)->getContent()->count() }}]</a></li>
+                    <li class="nav-item "><a href="{{ url('/logout') }}" class="nav-link"><span class="icon-user"></span> {{ \Illuminate\Support\Facades\Auth::user()->name }} ( logout )</a></li>
+                @else
+                    <li class="nav-item cta cta-colored"><a href="{{ url('/cart') }}" class="nav-link"><span class="icon-shopping_cart"></span>[{{ \Cart::session(2)->getContent()->count() }}]</a></li>
+                    <li class="nav-item "><a href="{{ url('/login') }}" class="nav-link"><span class="icon-user"></span> Login</a></li>
+
+                @endif
             </ul>
         </div>
     </div>

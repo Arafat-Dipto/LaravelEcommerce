@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="{{asset('css/flaticon.css')}}">
     <link rel="stylesheet" href="{{asset('css/icomoon.css')}}">
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <script src="https://js.stripe.com/v3/"></script>
     @stack('css')
 </head>
 <body class="goto-here">

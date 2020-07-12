@@ -21,50 +21,36 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach($cart as $c)
                             <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                <td class="product-remove"><a href="{{ route('cartRemove',$c->id) }}"><span class="ion-ios-close"></span></a></td>
 
-                                <td class="image-prod"><div class="img" style="background-image:url(images/product-3.jpg);"></div></td>
+                                <td class="image-prod"><div class="img" style="background-image:url('{{ asset('images/'.App\Product::find($c->id)->pro_img) }}');"></div></td>
 
                                 <td class="product-name">
-                                    <h3>Bell Pepper</h3>
+                                    <h3>{{ $c->name }}</h3>
                                     <p>Far far away, behind the word mountains, far from the countries</p>
                                 </td>
 
-                                <td class="price">$4.90</td>
+                                <td class="price">${{ $c->price }}</td>
 
                                 <td class="quantity">
                                     <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
+                                        <input type="text" name="quantity" class="quantity form-control input-number" value="{{ $c->quantity }}" min="1" max="100">
                                     </div>
                                 </td>
 
-                                <td class="total">$4.90</td>
+                                <td class="total">${{ $c->price*$c->quantity }}</td>
                             </tr><!-- END TR-->
+                            @endforeach
 
-                            <tr class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
 
-                                <td class="image-prod"><div class="img" style="background-image:url(images/product-4.jpg);"></div></td>
-
-                                <td class="product-name">
-                                    <h3>Bell Pepper</h3>
-                                    <p>Far far away, behind the word mountains, far from the countries</p>
-                                </td>
-
-                                <td class="price">$15.70</td>
-
-                                <td class="quantity">
-                                    <div class="input-group mb-3">
-                                        <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100">
-                                    </div>
-                                </td>
-
-                                <td class="total">$15.70</td>
-                            </tr><!-- END TR-->
                             </tbody>
+
                         </table>
+                        <a href="{{ route('cartClear') }}" class="btn btn-success product-remove" style="margin-left: 550px; margin-bottom: 20px;">Clear Cart</a>
                     </div>
+
                 </div>
             </div>
             <div class="row justify-content-end">
@@ -107,7 +93,7 @@
                         <h3>Cart Totals</h3>
                         <p class="d-flex">
                             <span>Subtotal</span>
-                            <span>$20.60</span>
+                            <span>${{ $subtotal }}</span>
                         </p>
                         <p class="d-flex">
                             <span>Delivery</span>
@@ -115,15 +101,21 @@
                         </p>
                         <p class="d-flex">
                             <span>Discount</span>
-                            <span>$3.00</span>
+                            <span>$0.00</span>
                         </p>
                         <hr>
                         <p class="d-flex total-price">
                             <span>Total</span>
-                            <span>$17.60</span>
+                            <span>${{ $total }}</span>
                         </p>
                     </div>
-                    <p><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>
+                    <p>
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <a href="{{ url('cart/checkout') }}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a>
+                        @else
+                            <a href="{{ url('/login') }}" class="btn btn-primary py-3 px-4">Proceed to Checkout</a>
+                        @endif
+                    </p>
                 </div>
             </div>
         </div>

@@ -41,5 +41,13 @@ class User extends Authenticatable
         return $this->hasMany(Verify::class);
     }
 
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function comment(){
+        return $this->hasMany(Comment::class);
+    }
+
 
 }

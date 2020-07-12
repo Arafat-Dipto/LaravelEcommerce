@@ -6,6 +6,7 @@ use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 
 class AdminDashboardController extends Controller
 {
@@ -45,21 +46,20 @@ class AdminDashboardController extends Controller
         return view('admin.post');
     }
 
-    public function createPost(){
+    public function createPost(Request $request){
         $this->validate(request(),[
             'title' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif',
             'details' => 'required'
         ]);
-        $img = request('image');
-        $newImg = uniqid().'.'.$img->getClientOriginalExtension();
-        $img->move(public_path('images'),$newImg);
+        $img = uniqid().'.jpg';
+        $request->image->move('images',$img);
 
-        Post::create([
+
+        User::find(Auth::id())->posts()->create([
             'title' => request('title'),
-            'image' => $newImg,
-            'details' => request('details'),
-            'user_id' => Auth::id()
+            'image' => $img,
+            'details' => request('details')
         ]);
 
         return redirect()->back();
@@ -78,10 +78,17 @@ class AdminDashboardController extends Controller
         return view('admin.editPost',compact('post'));
     }
 
-    public function editPost($id){
-        Post::find($id)->update([
+    public function editPost(Request $request){
+
+        $image = Post::find(request('image'));
+        File::delete('images/',$image);
+
+
+        $new_img = uniqid().'.jpg';
+        $request->image->move('images',$new_img);
+        Post::find(request('id'))->update([
             'title' => request('title'),
-            'image' => request('image'),
+            'image' => $new_img,
             'details' => request('details')
         ]);
         return redirect('/admin/post');
@@ -91,4 +98,6 @@ class AdminDashboardController extends Controller
         Post::find($id)->delete();
         return redirect()->back();
     }
+
+
 }

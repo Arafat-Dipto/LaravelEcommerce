@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
 use App\Post;
+use App\Product;
 use App\User;
 use App\Verify;
 use Illuminate\Http\Request;
@@ -28,27 +29,25 @@ class UserController extends Controller
 
     public function blogView($id){
         $post = \App\Post::find($id);
+        $comments = $post->comment;
         $posts = \App\Post::latest()->paginate(5);
-        return view('blogsingle',compact(['post','posts']));
+        return view('blogsingle',compact(['post','posts','comments']));
     }
     public function contact(){
         return view('contact');
     }
-    public function cart(){
-        return view('cart');
-    }
+
     public function shop(){
-        return view('shop');
+        $products = Product::latest()->paginate(12);
+        return view('shop',compact('products'));
     }
-    public function wishlist(){
-        return view('wishlist');
+
+    public function productsingle($id){
+        $product = \App\Product::find($id);
+        $products = \App\Product::where('category_id',$product->category_id)->get();
+        return view('singleproduct',compact(['product','products']));
     }
-    public function productsingle(){
-        return view('singleproduct');
-    }
-    public function checkout(){
-        return view('checkout');
-    }
+
 
     public function showlogin(){
         return view('login');
@@ -61,7 +60,7 @@ class UserController extends Controller
         ]);
 
         if(Auth::attempt(['name' => request('name'), 'password' => request('password'),'role' => 'user','verified' => 1])){
-            return redirect('/login');
+            return redirect('/');
         }elseif (Auth::attempt(['name' => request('name'), 'password' => request('password'),'role' => 'moderator','verified' => 1])){
             return redirect('admin/dashboard');
         }else{
@@ -114,5 +113,11 @@ class UserController extends Controller
         }else{
             return 'Invalid Request try again';
         }
+    }
+
+    public function search(){
+        $search = request('search_value');
+        $posts = \App\Post::where('title','LIKE','%'.$search.'%')->paginate(5);
+        return view('blog',compact('posts'));
     }
 }
